@@ -1,0 +1,19 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: interaction-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+# Optional logging level
+logging:
+  level:
+    root: INFO
+    com.example.interactionservice: DEBUG
