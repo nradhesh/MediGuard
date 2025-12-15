@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: interaction-service
+  ai:
+    openai:
+      api-key: ${GROQ_API_KEY:INSERT_API_KEY_HERE}         # set this in env / Docker, not in git
+      base-url: https://api.groq.com/openai
 
 eureka:
   client:
@@ -12,7 +16,6 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-# Optional logging level
 logging:
   level:
     root: INFO

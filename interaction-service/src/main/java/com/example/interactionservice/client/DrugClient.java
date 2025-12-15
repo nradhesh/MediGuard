@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
-@FeignClient(name = "drug-database-service")
+@FeignClient(name = "drug-database-service", url = "${drug.service.url:}")
 public interface DrugClient {
 
     @GetMapping("/drugs/{id}")

@@ -34,6 +34,11 @@ public class PrescriptionService {
         return repo.save(p);
     }
 
+    public String validateOnly(Prescription p) {
+        // Just compute summary without saving
+        return computeInteractionSummary(p.getItems());
+    }
+
     public Prescription getById(Long id) {
         return repo.findById(id).orElse(null);
     }

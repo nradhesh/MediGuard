@@ -1,0 +1,32 @@
+# Kustomization file for easier management
+# Usage: kubectl apply -k k8s/
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: drug-interaction-system
+
+resources:
+  - namespace.yaml
+  - configmap-eureka.yaml
+  - configmap-drug-db.yaml
+  - configmap-interaction.yaml
+  - configmap-prescription.yaml
+  - configmap-frontend.yaml
+  - deployment-eureka.yaml
+  - service-eureka.yaml
+  - deployment-drug-db.yaml
+  - service-drug-db.yaml
+  - deployment-interaction.yaml
+  - service-interaction.yaml
+  - deployment-prescription.yaml
+  - service-prescription.yaml
+  - deployment-frontend.yaml
+  - service-frontend.yaml
+  - ingress.yaml
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (1, 'Aspirin', 'NSAID', 300);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (2, 'Warfarin', 'Anticoagulant', 5);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (3, 'Ibuprofen', 'NSAID', 400);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (4, 'Paracetamol', 'Analgesic', 500);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (5, 'Amoxicillin', 'Antibiotic', 500);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (6, 'Lisinopril', 'ACE Inhibitor', 10);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (7, 'Atorvastatin', 'Statin', 20);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (8, 'Metformin', 'Antidiabetic', 500);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (9, 'Ciprofloxacin', 'Antibiotic', 500);
+INSERT INTO drug (id, name, category, dosage_mg) VALUES (10, 'Cetirizine', 'Antihistamine', 10);
+
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (1, 'Nausea');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (1, 'Bleeding');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (2, 'Bleeding');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (3, 'Stomach Pain');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (4, 'Liver Toxicity (high dose)');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (5, 'Diarrhea');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (6, 'Cough');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (6, 'Dizziness');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (7, 'Muscle Pain');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (8, 'Nausea');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (9, 'Nausea');
+INSERT INTO drug_side_effects (drug_id, side_effect) VALUES (10, 'Drowsiness');

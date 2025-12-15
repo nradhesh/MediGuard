@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: drug-database-config
+  namespace: drug-interaction-system
+data:
+  application.yml: |
+    server:
+      port: 9001
+      servlet:
+        context-path: /api
+
+    spring:
+      application:
+        name: drug-database-service
+      datasource:
+        url: jdbc:h2:mem:testdb
+        driverClassName: org.h2.Driver
+        username: sa
+        password: ""
+      h2:
+        console:
+          enabled: true
+          path: /h2-console
+          settings:
+            web-allow-others: true
+      jpa:
+        defer-datasource-initialization: true
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+
+    eureka:
+      instance:
+        prefer-ip-address: true
+      client:
+        service-url:
+          defaultZone: http://eureka-server:8761/eureka/

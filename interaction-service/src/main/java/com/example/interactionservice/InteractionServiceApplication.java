@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableFeignClients  // REQUIRED for Feign Client to work
 public class InteractionServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(InteractionServiceApplication.class, args);
 		System.out.println("Interaction Service is running...");

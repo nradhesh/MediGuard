@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prescription-service-config
+  namespace: drug-interaction-system
+data:
+  application.yml: |
+    server:
+      port: 9003
+      servlet:
+        context-path: /api
+
+    spring:
+      application:
+        name: prescription-service
+      datasource:
+        url: jdbc:h2:mem:prescriptiondb;DB_CLOSE_DELAY=-1
+        driverClassName: org.h2.Driver
+        username: sa
+        password:
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+      h2:
+        console:
+          enabled: true
+          path: /h2-console
+        settings:
+          web-allow-others: true
+
+    drug:
+      service:
+        url: http://drug-database-service:9001/api
+    interaction:
+      service:
+        url: http://interaction-service:9002/api
+
+    eureka:
+      instance:
+        prefer-ip-address: true
+      client:
+        serviceUrl:
+          defaultZone: http://eureka-server:8761/eureka/

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prescription-service
+  namespace: drug-interaction-system
+  labels:
+    app: prescription-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9003
+    targetPort: 9003
+    protocol: TCP
+    name: http
+  selector:
+    app: prescription-service
+
+
+
+
+
+

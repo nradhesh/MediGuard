@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Drug, InteractionResult, Prescription } from '@/types/drug';
 
-const DRUG_SERVICE_URL = 'http://localhost:9001';
-const INTERACTION_SERVICE_URL = 'http://localhost:9002';
-const PRESCRIPTION_SERVICE_URL = 'http://localhost:9003';
+// Use environment variables for API URLs, fallback to relative paths for Kubernetes deployment
+const DRUG_SERVICE_URL = import.meta.env.VITE_DRUG_SERVICE_URL || '/api/drugs';
+const INTERACTION_SERVICE_URL = import.meta.env.VITE_INTERACTION_SERVICE_URL || '/api/interactions';
+const PRESCRIPTION_SERVICE_URL = import.meta.env.VITE_PRESCRIPTION_SERVICE_URL || '/api/prescriptions';
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -33,37 +34,46 @@ apiClient.interceptors.response.use(
 
 // Drug Database Service
 export const drugService = {
-  getAllDrugs: () => apiClient.get<Drug[]>(`${DRUG_SERVICE_URL}/drugs`),
-  getDrugById: (id: number) => apiClient.get<Drug>(`${DRUG_SERVICE_URL}/drugs/${id}`),
-  createDrug: (drug: Omit<Drug, 'id'>) => apiClient.post<Drug>(`${DRUG_SERVICE_URL}/drugs`, drug),
+  getAllDrugs: () => apiClient.get<Drug[]>(DRUG_SERVICE_URL.startsWith('/') ? DRUG_SERVICE_URL : `${DRUG_SERVICE_URL}/drugs`),
+  getDrugById: (id: number) => apiClient.get<Drug>(DRUG_SERVICE_URL.startsWith('/') ? `${DRUG_SERVICE_URL}/${id}` : `${DRUG_SERVICE_URL}/drugs/${id}`),
+  createDrug: (drug: Omit<Drug, 'id'>) => apiClient.post<Drug>(DRUG_SERVICE_URL.startsWith('/') ? DRUG_SERVICE_URL : `${DRUG_SERVICE_URL}/drugs`, drug),
   updateDrug: (id: number, drug: Omit<Drug, 'id'>) => 
-    apiClient.put<Drug>(`${DRUG_SERVICE_URL}/drugs/${id}`, drug),
-  deleteDrug: (id: number) => apiClient.delete<string>(`${DRUG_SERVICE_URL}/drugs/${id}`),
+    apiClient.put<Drug>(DRUG_SERVICE_URL.startsWith('/') ? `${DRUG_SERVICE_URL}/${id}` : `${DRUG_SERVICE_URL}/drugs/${id}`, drug),
+  deleteDrug: (id: number) => apiClient.delete<string>(DRUG_SERVICE_URL.startsWith('/') ? `${DRUG_SERVICE_URL}/${id}` : `${DRUG_SERVICE_URL}/drugs/${id}`),
   bulkCreateDrugs: (drugs: Omit<Drug, 'id'>[]) => 
-    apiClient.post<Drug[]>(`${DRUG_SERVICE_URL}/drugs/bulk`, drugs),
+    apiClient.post<Drug[]>(DRUG_SERVICE_URL.startsWith('/') ? `${DRUG_SERVICE_URL}/bulk` : `${DRUG_SERVICE_URL}/drugs/bulk`, drugs),
 };
 
 // Interaction Service
 export const interactionService = {
   analyzeInteraction: (drugA: number, drugB: number) => 
     apiClient.get<InteractionResult>(
-      `${INTERACTION_SERVICE_URL}/interactions/analyze?drugA=${drugA}&drugB=${drugB}`
+      INTERACTION_SERVICE_URL.startsWith('/') 
+        ? `${INTERACTION_SERVICE_URL}/analyze?drugA=${drugA}&drugB=${drugB}`
+        : `${INTERACTION_SERVICE_URL}/interactions/analyze?drugA=${drugA}&drugB=${drugB}`
     ),
-  getHealth: () => apiClient.get<string>(`${INTERACTION_SERVICE_URL}/health`),
+  getHealth: () => apiClient.get<string>(INTERACTION_SERVICE_URL.startsWith('/') ? `${INTERACTION_SERVICE_URL}/health` : `${INTERACTION_SERVICE_URL}/health`),
+  chat: (message: string) => 
+    apiClient.post<{ response: string }>(
+      INTERACTION_SERVICE_URL.startsWith('/') 
+        ? `${INTERACTION_SERVICE_URL}/chat`
+        : `${INTERACTION_SERVICE_URL}/interactions/chat`,
+      { message }
+    ),
 };
 
 // Prescription Service
 export const prescriptionService = {
   getAllPrescriptions: () => 
-    apiClient.get<Prescription[]>(`${PRESCRIPTION_SERVICE_URL}/prescriptions`),
+    apiClient.get<Prescription[]>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? PRESCRIPTION_SERVICE_URL : `${PRESCRIPTION_SERVICE_URL}/prescriptions`),
   getPrescriptionById: (id: number) => 
-    apiClient.get<Prescription>(`${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`),
+    apiClient.get<Prescription>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? `${PRESCRIPTION_SERVICE_URL}/${id}` : `${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`),
   createPrescription: (prescription: Omit<Prescription, 'id' | 'createdAt'>) => 
-    apiClient.post<Prescription>(`${PRESCRIPTION_SERVICE_URL}/prescriptions`, prescription),
+    apiClient.post<Prescription>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? PRESCRIPTION_SERVICE_URL : `${PRESCRIPTION_SERVICE_URL}/prescriptions`, prescription),
   updatePrescription: (id: number, prescription: Omit<Prescription, 'id' | 'createdAt'>) => 
-    apiClient.put<Prescription>(`${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`, prescription),
+    apiClient.put<Prescription>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? `${PRESCRIPTION_SERVICE_URL}/${id}` : `${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`, prescription),
   deletePrescription: (id: number) => 
-    apiClient.delete<string>(`${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`),
+    apiClient.delete<string>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? `${PRESCRIPTION_SERVICE_URL}/${id}` : `${PRESCRIPTION_SERVICE_URL}/prescriptions/${id}`),
   validatePrescription: (prescription: Omit<Prescription, 'id' | 'createdAt'>) => 
-    apiClient.post<string>(`${PRESCRIPTION_SERVICE_URL}/prescriptions/validate`, prescription),
+    apiClient.post<string>(PRESCRIPTION_SERVICE_URL.startsWith('/') ? `${PRESCRIPTION_SERVICE_URL}/validate` : `${PRESCRIPTION_SERVICE_URL}/prescriptions/validate`, prescription),
 };

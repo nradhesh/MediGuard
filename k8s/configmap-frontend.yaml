@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: drug-interaction-system
+data:
+  VITE_DRUG_SERVICE_URL: "/api/drugs"
+  VITE_INTERACTION_SERVICE_URL: "/api/interactions"
+  VITE_PRESCRIPTION_SERVICE_URL: "/api/prescriptions"
+
+
+
+
+
+

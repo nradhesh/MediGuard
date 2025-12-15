@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interaction-service
+  namespace: drug-interaction-system
+  labels:
+    app: interaction-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interaction-service
+  template:
+    metadata:
+      labels:
+        app: interaction-service
+    spec:
+      containers:
+      - name: interaction-service
+        image: interaction-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9002
+        env:
+        - name: SPRING_CONFIG_LOCATION
+          value: "file:/app/config/application.yml"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 9002
+          initialDelaySeconds: 90
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 9002
+          initialDelaySeconds: 60
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: interaction-service-config

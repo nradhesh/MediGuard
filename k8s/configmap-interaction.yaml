@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: interaction-service-config
+  namespace: drug-interaction-system
+data:
+  application.yml: |
+    server:
+      port: 9002
+      servlet:
+        context-path: /api
+
+    spring:
+      application:
+        name: interaction-service
+      ai:
+        openai:
+          api-key: ${GROQ_API_KEY:INSERT_API_KEY_HERE}
+          base-url: https://api.groq.com/openai/v1
+
+    drug:
+      service:
+        url: http://drug-database-service:9001/api
+    
+    groq:
+      api:
+        key: ${GROQ_API_KEY:INSERT_API_KEY_HERE}
+
+    eureka:
+      instance:
+        prefer-ip-address: true
+      client:
+        service-url:
+          defaultZone: http://eureka-server:8761/eureka/
+        register-with-eureka: true
+        fetch-registry: true
+
+    logging:
+      level:
+        root: INFO
+        com.example.interactionservice: DEBUG

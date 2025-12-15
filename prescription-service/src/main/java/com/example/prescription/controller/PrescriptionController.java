@@ -52,7 +52,7 @@ public class PrescriptionController {
      */
     @PostMapping("/validate")
     public ResponseEntity<String> validate(@RequestBody Prescription p) {
-        String summary = svc.createPrescription(p).getInteractionSummary();
+        String summary = svc.validateOnly(p);
         return ResponseEntity.ok(summary);
     }
 }

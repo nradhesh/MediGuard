@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drug-database-service
+  namespace: drug-interaction-system
+  labels:
+    app: drug-database-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drug-database-service
+  template:
+    metadata:
+      labels:
+        app: drug-database-service
+    spec:
+      containers:
+      - name: drug-database-service
+        image: drug-database-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9001
+        env:
+        - name: SPRING_CONFIG_LOCATION
+          value: "file:/app/config/application.yml"
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        livenessProbe:
+          httpGet:
+            path: /api/drugs
+            port: 9001
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/drugs
+            port: 9001
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: drug-database-config

@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: drug-interaction-ingress
+  namespace: drug-interaction-system
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      - path: /api/drugs(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: drug-database-service
+            port:
+              number: 9001
+      - path: /api/interactions(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: interaction-service
+            port:
+              number: 9002
+      - path: /api/prescriptions(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: prescription-service
+            port:
+              number: 9003
+      - path: /eureka(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: eureka-server
+            port:
+              number: 8761

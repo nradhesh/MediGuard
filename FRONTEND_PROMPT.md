@@ -421,3 +421,12 @@ Similar structure for `interactionService.js` and `prescriptionService.js`.
 - Implement optimistic updates where appropriate for better UX
 
 
+
+
+
+
+
+
+
+
+

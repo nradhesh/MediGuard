@@ -530,3 +530,12 @@ try {
 The architecture follows microservices best practices with proper service discovery, declarative clients, and resilience patterns.
 
 
+
+
+
+
+
+
+
+
+
